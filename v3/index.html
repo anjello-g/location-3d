@@ -18,9 +18,31 @@
       <a-box
         look-at="[gps-camera]"
         scale="150 150 150"
-        gps-entity-place="latitude: 44.4908615; longitude: 11.3326416;"
+        gps-entity-place="latitude: 0; longitude: 0;"
       ></a-box>
       <a-camera gps-camera rotation-reader> </a-camera>
+
+       <script>
+            // Get user's current location using Geolocation API
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude + 0.01; // Adjust as needed
+                    const longitude = position.coords.longitude + 0.01; // Adjust as needed
+                    const altitude = position.coords.altitude || 0;
+
+                    // Update AR marker position based on user's location
+                    const arMarker = document.getElementById('ar-marker');
+                    arMarker.setAttribute('gps-entity-place', {
+                        latitude: latitude,
+                        longitude: longitude,
+                        elevation: altitude
+                    });
+                },
+                (error) => {
+                    console.error('Error getting user location:', error);
+                }
+            );
+        </script>
     </a-scene>
   </body>
 </html>
